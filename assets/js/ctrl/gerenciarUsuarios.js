@@ -20,7 +20,7 @@ var gerenciarUsuarios = {
 							<th scope="row">${childSnapshot.val().nome}</th>
 							<td>${childSnapshot.val().matricula}</td>
 							<td class="text-right">
-								<button class="btn btn-fill btn-sm btnGerenciarUsuario" value="${childSnapshot.key}" data-case="show">Visualizar ${childSnapshot.val().nome}</button>
+								<button class="btn btn-fill btn-sm btnVisualizar" value="${childSnapshot.key}" data-case="show">Visualizar ${childSnapshot.val().nome}</button>
 							</td>
 						</tr>`);
 					}
@@ -33,11 +33,8 @@ var gerenciarUsuarios = {
 		$()
 	},
 
-	gerenciar: function(userUid){
-		// if(localStorage.currentUid == userUid){
-		// 	cas_e.close();
-		// 	loadPage('perfil');
-		// }else{
+	visualizar: function(userUid){
+		$('.case .case-footer').remove();
 
 		db
 		.ref('users')
@@ -46,24 +43,18 @@ var gerenciarUsuarios = {
 			var dataSaida = (snapshot.val().dataSaida == undefined) ? "ainda ativo" : snapshot.val().dataSaida;
 			$('.case .case-header span').html("Visualizar "+snapshot.val().nome);
 			$('.case .case-container').html(`
-				<button class="btn btn-default btn-fill btn-sm" value="${userUid}"><div class="fa fa-pencil-square-o"></div> Editar</button>
-				<button class="btn btn-default btn-fill btn-sm" value="${userUid}"><div class="fa fa-lock"></div> Bloquear</button>
-				<button class="btn btn-default btn-fill btn-sm btnRemoverUsuario" value="${userUid}"><div class="fa fa-ban"></div> Excluir</button>
-
-				<br /><br />
-
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Nome</label>
-							<input class="form-control inputNome" value="${snapshot.val().nome}" placeholder="Nome" disabled/>
+							<input type="text" class="form-control inputNome" value="${snapshot.val().nome}" placeholder="Nome" disabled/>
 						</div>
 					</div>
 
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Matricula</label>
-							<input class="form-control inputMatricula" value="${snapshot.val().matricula}" placeholder="Nome" disabled/>
+							<input type="text" class="form-control inputMatricula" value="${snapshot.val().matricula}" placeholder="Nome" disabled/>
 						</div>
 					</div>
 				</div>
@@ -72,49 +63,97 @@ var gerenciarUsuarios = {
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>CPF</label>
-							<input class="form-control inputCpf" value="${snapshot.val().cpf}" placeholder="Nome" disabled/>
+							<input type="text" class="form-control inputCpf" value="${snapshot.val().cpf}" placeholder="Nome" disabled/>
 						</div>
 					</div>
 
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Whatsapp</label>
-							<input class="form-control inputWhatsapp" value="${snapshot.val().whatsapp}" placeholder="Nome" disabled/>
+							<input type="text" class="form-control inputWhatsapp" value="${snapshot.val().whatsapp}" placeholder="Nome" disabled/>
 						</div>
 					</div>
 				</div>
 
-				
-				<strong>Curso</strong>: ${snapshot.val().curso} <br />
-				<strong>Semestre</strong>: ${snapshot.val().semestre} <br />
-				<strong>Data de Admissão</strong>: ${snapshot.val().dataAdmissao} <br />
-				<strong>Data de saída</strong>: ${dataSaida} <br />
-				<strong>Cargo</strong>: ${snapshot.val().cargo}
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Curso</label>
+							<input type="text" class="form-control inputCurso" value="${snapshot.val().curso}" placeholder="Nome" disabled/>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Semestre</label>
+							<input type="number" class="form-control inputSemestre" value="${snapshot.val().semestre}" placeholder="Nome" disabled/>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Data de admissão</label>
+							<input type="date" class="form-control inputDataAdmissao" value="${snapshot.val().dataAdmissao}" placeholder="Nome" disabled/>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Cargo</label>
+							<input type="number" class="form-control inputCargo" value="${snapshot.val().cargo}" placeholder="Nome" disabled/>
+						</div>
+					</div>
+				</div>
 			`);
+			$('.case').append(`
+				<div class="case-footer">
+					<div class="text-right">
+						<button class="btn btn-default btn-fill btn-sm btnEditar" value="${userUid}"><div class="fa fa-pencil-square-o"></div> Editar</button>
+						<button class="btn btn-default btn-fill btn-sm btnBloquear" value="${userUid}"><div class="fa fa-lock"></div> Bloquear</button>
+						<button class="btn btn-default btn-fill btn-sm btnRemover" value="${userUid}"><div class="fa fa-ban"></div> Excluir</button>
+					</div>
+				</div>`);
 		});
 
 	},
 
-	editar: function(userUid){
+	verifica: function(data, userUid){
+		$.notifyClose();
 
+		for(key in data){
+            if(data[key]==''){
+                $.notify({message: "Preencha o campo "+key}, {type: 'danger', timer: 3000, newest_on_top: true});
+                return;
+            }
+		}
+
+		if(!data.nome.match('[a-zA-Z]+')){
+			$.notify({message: "Digite um nome válido"}, {type: 'danger', timer: 3000, newest_on_top: true});
+		}else if(!data.cpf.match('[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}')){
+            $.notify({message: "Digite um CPF válido"}, {type: 'danger', timer: 3000, newest_on_top: true});
+        }else if(data.matricula.length <= 3){
+            $.notify({message: "A matrícula deve ter 4 ou mais caracteres"}, {type: 'danger', timer: 3000, newest_on_top: true});
+        }else if(data.whatsapp.match('\([0-9]{2}\)[0-9]{5}\-[0-9]{4}')){
+            $.notify({message: "Digite um whatsapp válido"}, {type: 'danger', timer: 3000, newest_on_top: true});
+        }else if(!data.dataAdmissao.match('[0-9]{2}\/[0-9]{2}\/[0-9]{4}')){
+			$.notify({message: "Digite uma data de admissão válida"}, {type: 'danger', timer: 3000, newest_on_top: true});
+		}else{
+			verificaNilve(0, gerenciarUsuarios.editar(data, userUid));
+		}
+	},
+
+	editar: function(data, userUid){
+		//Função editar aqui
 	},
 
 	bloquear: function(userUid){
-
+		//Função bloquear aqui
 	},
 
 	remover: function(userUid){
-		// if(userToDeleteuid != undefined){
-		// 	db
-		// 	.ref('users')
-		// 	.child(userToDeleteuid)
-		// 	.set(null);
-
-		// 	userToDeleteuid = undefined;
-		// }else{
-		// 	$.notify({message: "Não foi possível deletar este usuário!"}, {type: 'info', timer: 2000});
-		// }
-		alert("saporra");
+		//Função remover aqui
 	},
 
 
@@ -123,18 +162,39 @@ var gerenciarUsuarios = {
 
 gerenciarUsuarios.load();
 
-$(document).on('click','.btnEditarUsuario',function(){
-	gerenciarUsuarios.editar(this.value);
+$(document).on('click','.btnEditar',function(){
+	$('.btnBloquear').fadeOut(100);
+	$('.btnRemover').fadeOut(100);
+	$(this).removeClass('btn-default').addClass('btn-info');
+
+	$('.inputAdmissao').mask('00/00/0000');
+	$('.inputCpf').mask('000.000.000-00');
+	$('.inputWhatsapp').mask('(00)00000-0000');
+
+	$('.case input').prop("disabled", false);
+
+	var data = {
+		nome: $('.inputNome').val(),
+		cpf: $('.inputCpf').val(),
+		matricula: $('.inputMatricula').val(),
+		dataAdmissao: $('.inputDataAdmissao').val(),
+		curso: $('.inputCurso').val(),
+		semestre: $('.inputSemestre').val(),
+		cargo: $('.inputCargo'),
+		whatsapp: $('.inputWhatsapp').val()
+	};
+
+	gerenciarUsuarios.verifica(data, this.value);
 });
 
-$(document).on('click','.btnBloquearUsuario',function(){
+$(document).on('click','.btnBloquear',function(){
 	gerenciarUsuarios.bloquear(this.value);
 });
 
-$(document).on('click','.btnRemoverUsuario',function(){
+$(document).on('click','.btnRemover',function(){
 	gerenciarUsuarios.remover(this.value);
 });
 
-$(document).on('click','.btnGerenciarUsuario', function(){
-	verificaNivel(0, gerenciarUsuarios.gerenciar(this.value));
+$(document).on('click','.btnVisualizar', function(){
+	verificaNivel(0, gerenciarUsuarios.visualizar(this.value));
 });
