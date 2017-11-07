@@ -1,0 +1,129 @@
+*, html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body, .case {
+  font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
+  font-weight: 300;
+}
+
+.skin {
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 8888;
+}
+
+.case {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5);
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  z-index: 999999;
+  background: #FFFFFF;
+  color: #999;
+  min-width: 50%;
+}
+
+.case.hide {
+  display: none;
+  opacity: 0;
+}
+
+.case.show {
+  display: block;
+  opacity: 1;
+}
+
+.case .case-header {
+  border-bottom: 1px solid #CCC;
+  font-weight: 400;
+  padding: 15px;
+  font-size: 16px;
+  color: #666666;
+}
+
+.case .case-header a[data-case="hide"] {
+  color: #999999;
+  position: absolute;
+  right: 15px;
+}
+
+.case .case-header a[data-case="hide"]:hover {
+  color: #666666;
+}
+
+.case .case-container {
+  padding: 15px;
+}
+
+.case .case-footer {
+  border-top: 1px solid #CCC;
+  padding: 15px;
+}
+
+@media (max-width: 768px) {
+  .case {
+    min-width: 85%;
+  }
+}
+
+ul.little-box li {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  display: inline-block;
+  color: #666;
+  text-align: center;
+  margin: 5px;
+  cursor: pointer;
+  max-height: 100px;
+}
+
+ul.little-box li.fixed {
+  background: rgba(0, 0, 0, 0.25);
+  color: #555555;
+}
+
+ul.little-box li.fixed span {
+  font-weight: 700;
+}
+
+ul.little-box li:hover {
+  background: rgba(0, 0, 0, 0.25);
+  color: #555555;
+}
+
+ul.little-box li:first-child {
+  margin-left: 0;
+}

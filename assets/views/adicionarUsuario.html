@@ -1,0 +1,121 @@
+<ol class="breadcrumb">
+        <li class="breadcrumb-item active">Gerência</li>
+        <li class="breadcrumb-item active">Adicionar usuário</li>
+      </ol>
+
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card">
+                  <div class="header">
+                      <h4 class="title">Adicionar usuário</h4>
+                  </div>
+                  <div class="content">
+                      <div class="row">
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label>Nome</label>
+                                  <input type="text" class="form-control inputNome" placeholder="Ex: Victor Lucas">
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label>CPF</label>
+                                  <input type="text" class="form-control inputCpf" placeholder="Ex: 999888777-66">
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label>Matricula</label>
+                                  <input type="text" class="form-control inputMatricula" placeholder="Ex: 397307" maxlength="8">
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label>Data de admissão</label>
+                                  <input type="date" class="form-control inputDataAdmissao">
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label>Data de saída <i class="fa fa-question-circle" data-toggle="tooltip" title="Deixe em branco se o membro ainda estiver ativo"></i></label>
+                                  <input type="date" class="form-control inputDataSaida">
+                              </div>
+                          </div>
+                          <div class="col-md-2">
+                              <div class="form-group">
+                                  <label>Curso <i class="fa fa-question-circle" data-toggle="tooltip" title="Escreva a abreviatura"></i></label>
+                                  <input type="text" class="form-control inputCurso" maxlength="4">
+                              </div>
+                          </div>
+                          <div class="col-md-2">
+                              <div class="form-group">
+                                  <label>Semestre</label>
+                                  <input type="number" class="form-control inputSemestre" min="1" max="12">
+                              </div>
+                          </div>
+                      </div>
+
+
+                      <div class="row">
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label>E-mail</label>
+                                  <input type="text" class="form-control inputEmail" placeholder="Ex: contato@techsoft.com">
+                              </div>
+                          </div>
+
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label>Cargo</label>
+                                  <select class="form-control inputCargo">
+                                   <optgroup label="Gerência" title="Cargos da gerência têm acesso ao painel administrativo">
+                                      <option value="Diretor">Diretor</option>
+                                      <option value="Gerente de negócios">Gerente de negócios</option>
+                                      <option value="Coordenador de projetos">Gerente de projetos</option>
+                                    </optgroup>
+                                    <optgroup label="Equipe">
+                                      <option value="Analista/Programador">Analista/Programador</option>
+                                      <option value="Designer">Designer</option>
+                                      <option value="Analista de sistemas">Analista de sistemas</option>
+                                    </optgroup>
+                                  </select>
+                              </div>
+                          </div>
+
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <label>Whatsapp</label>
+                                  <input type="text" class="form-control inputWhatsapp" placeholder="Ex: (99)9-9999-9999">
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label>Senha</label>
+                                  <input type="password" class="form-control inputSenha" placeholder="Senha">
+                              </div>
+                          </div>
+
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label>Confirme sua senha</label>
+                                  <input type='password' class="form-control inputConfirmaSenha" placeholder="Confirme sua senha">
+                              </div>
+                          </div>
+                      </div>
+
+                      <button type="button" class="btn btn-info btn-fill pull-right btnAdicionarUsuario">Adicionar usuário</button>
+                      <div class="clearfix"></div>
+
+                  </div>
+              </div>
+          </div>
+
+      </div>
+
+      <script src="assets/js/ctrl/adicionarUsuario.js" type="text/javascript"></script>

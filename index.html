@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+
+	<title>Techsoft - Administrativo</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link href="assets/css/board.css" rel="stylesheet" />
+    <link href="assets/css/global.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+    <script src="assets/js/bootstrap-notify.js"></script>
+    <script src="assets/js/board.js"></script>
+    <script src="assets/js/firebase.js"></script>
+    <script src="assets/js/index.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-color="orange" id="navegacao">
+
+            <div class="sidebar-wrapper">
+                <center class="logo">
+                    Techsoft
+                </center>
+
+                <ul class="nav">
+                    <li data-page="inicio">
+                        <a>
+                            <i class="pe-7s-home"></i>
+                            <p>Inicio</p>
+                        </a>
+                    </li>
+
+                    <li data-page="funcionalidades">
+                        <a>
+                            <i class="pe-7s-tools"></i>
+                            <p>Funcionalidades</p>
+                        </a>
+                    </li>
+
+                    <li data-page="perfil">
+                        <a>
+                            <i class="pe-7s-user"></i>
+                            <p>Meu perfil</p>
+                        </a>
+                    </li>
+
+                    <li class="sairBtn">
+                        <a>
+                            <i class="pe-7s-close"></i>
+                            <p>Sair</p>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-default navbar-fixed">
+                <div class="container-fluid">
+
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navegacao">
+                            <div class="fa fa-bars"></div>
+                        </button>
+                        <span class="navbar-toggle voltarPagina hidden-lg" data-page="voltarPagina"><div class="fa fa-arrow-left"></div></span>
+                        <span class="navbar-brand titleBarNome"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                        <span class="navbar-brand loadingPage" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="content">
+            <div class="janela black-gradient" style="display: none;">
+                    <div class="loading">
+                        Carregando página...
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="loadPage"></div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="case hide">
+        <div class="case-header">
+            <span><i class="fa fa-circle-o-notch fa-spin"></i></span> <a data-case="hide"><div class="fa fa-times"></div></a>
+        </div>
+
+        <div class="case-container"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+<!-- 
+        <div class="case-footer">
+                Here's a case footer
+            </div> -->
+    </div>
+</body>
+<script src="assets/js/global.js?v=02543|"></script>
+	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/js/bootstrap-notify.js"></script>
+</html>

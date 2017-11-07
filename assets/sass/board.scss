@@ -1,0 +1,107 @@
+@import 'reset';
+@import 'mixins';
+
+$default_transition: all 0.2s;
+$default_boxShadow: 0 0 15px 0 rgba(0,0,0,0.5);
+$default_borderRadius: 5px;
+
+.skin {
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 8888;
+
+}
+
+.case {
+    @include borderRadius($default_borderRadius);
+    @include centerParent();
+    @include boxShadow($default_boxShadow);
+    @include transition($default_transition);
+
+    z-index: 999999;
+    background: #FFFFFF;
+    color: #999;
+    min-width: 50%;
+
+    &.hide {
+        display: none;
+        opacity: 0;
+    }
+
+    &.show {
+        display: block;
+        opacity: 1;
+    }
+
+    .case-header {
+        border-bottom: 1px solid #CCC;
+        font-weight: 400;
+        padding: 15px;
+        font-size: 16px;
+        color: #666666;
+
+        a[data-case="hide"] {
+            color: #999999;
+            position: absolute;
+            right: 15px;
+
+            &:hover {
+                color: #666666;
+            }
+        }
+    }
+
+    .case-container {
+        padding: 15px;
+    }
+
+    .case-footer {
+        border-top: 1px solid #CCC;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px){
+    .case {
+        min-width: 85%;
+    }
+}
+
+
+ul.little-box {
+
+    li {
+        @include borderRadius($default_borderRadius);
+        @include transition($default_transition);
+
+        background: rgba(0,0,0,0.15);
+        padding: 20px;
+        display: inline-block;
+        color: #666;
+        text-align: center;
+        margin: 5px;
+        cursor: pointer;
+        max-height: 100px;
+        
+        &.fixed {
+            background: rgba(0,0,0,0.25);
+            color: #555555;
+
+            span {
+                font-weight: 700;
+            }
+        }
+
+        &:hover {
+            background: rgba(0,0,0,0.25);
+            color: #555555;
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+}
