@@ -26,12 +26,22 @@ function loadPage(page){
 	// }
 }
 
+var cargos = {
+		"Diretor": 0,
+		"Gerente de negócios": 0,
+		"Coordenador de projetos": 0,
+		"Analista/Programador": 1,
+		"Designer": 1,
+		"Analista de sistemas": 1
+};
+
 function verificaNivel(nivel, func){
 	db.ref('users').child(localStorage.currentUid).once('value',function(user){
-		if(user.val().nivel == nivel){
+		if(user.val().cargo == nivel){
 			func;
 		}else{
 			cas_e.close();
+			loadPage('inicio');
 			$.notify({message: "Função indisponível para seu usuário!"},{type: 'danger', timer: 3000});
 		}
 	});

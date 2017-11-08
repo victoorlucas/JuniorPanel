@@ -4,6 +4,10 @@ var adicionarUsuario = {
 		$('.inputDataSaida').mask('00/00/0000');
 		$('.inputCpf').mask('000.000.000-00');
 		$('.inputWhatsapp').mask('(00)00000-0000');
+
+		for(key in cargos){
+			$('.inputCargo').append(`<option value="${cargos[key]}">${key}</option>`);
+		}
 	},
 
     adicionar: function(data){
@@ -13,7 +17,7 @@ var adicionarUsuario = {
 			.catch(function(error){
 				if(error.code == 'auth/email-already-in-use'){
 					$.notify({message: "Este e-mail já está em uso!"}, { type: 'danger', timer: 3000 });
-				}else if(error.code == 'auth/invalid-email'){ 
+				}else if(error.code == 'auth/invalid-email'){
 					$.notify({message: "Por favor, digite um e-mail válido!"}, {type: 'danger',timer: 3000});
 				}else if(error.code == 'auth/weak-password'){
 					$.notify({message: "Por favor, digite uma senha forte!"}, {type: 'danger',timer: 3000});
@@ -61,7 +65,7 @@ var adicionarUsuario = {
 			$.notify({message: "Digite senhas iguais"}, {type: 'danger', timer: 3000, newest_on_top: true});
             // data.senha.select();
 		}else{
-			verificaNilve(0,adicionarUsuario.adicionar(data));
+			verificaNivel(0,adicionarUsuario.adicionar(data));
 		}
 	}
 
@@ -82,11 +86,10 @@ $(function(){
 			curso: $('.inputCurso').val(),
 			semestre: $('.inputSemestre').val(),
 			email: $('.inputEmail').val(),
-			cargo: $('.inputCargo'),
+			cargo: $('.inputCargo').val(),
 			whatsapp: $('.inputWhatsapp').val(),
 			senha: $('.inputSenha').val(),
-			confirmaSenha: $('.inputConfirmaSenha').val(),
-			nivel: 1
+			confirmaSenha: $('.inputConfirmaSenha').val()
 		};
 
 		adicionarUsuario.verifica(data);
