@@ -13,7 +13,7 @@ body, .case {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 8888;
+  z-index: 8;
 }
 
 .case {
@@ -40,7 +40,7 @@ body, .case {
   -ms-transition: all 0.2s;
   -o-transition: all 0.2s;
   transition: all 0.2s;
-  z-index: 999999;
+  z-index: 9;
   background: #FFFFFF;
   color: #999;
   min-width: 50%;
