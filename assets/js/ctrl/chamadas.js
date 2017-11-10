@@ -4,12 +4,10 @@ var chamadas = {
 
         var loadChamadas = $('.loadChamadas');
         db.ref('chamadas').on('child_added',function(childSnapshot){
-            $('.loading').remove();
-            loadChamadas.append(`<li class="btnGerenciarChamada" data-case="show" data-value="${childSnapshot.key}">${childSnapshot.val().data} <br /><small> presentes</small></li>`);
+            $('.btnAdicionarChamada').after(`<li class="btnGerenciarChamada" data-case="show" data-value="${childSnapshot.key}">${childSnapshot.val().data} <br /><small> ${childSnapshot.val().qntPresentes} presentes</small></li>`);
         });
 
         db.ref('chamadas').on('child_removed',function(childSnapshot){
-            $('.loading').remove();
             loadChamadas.find(`[data-value="${childSnapshot.key}"]`).remove();
         });
 
@@ -21,31 +19,37 @@ var chamadas = {
             .ref('chamadas')
             .child(chamId)
             .once('value', function(snapshot){
-                var descricao = (snapshot.val().descricao == '') ? "<i>Sem descrição</i>" : snapshot.val().descricao;
+                var descricao = (snapshot.val().descricao == '') ? "Sem descrição" : snapshot.val().descricao;
                 $('.case .case-header span').html("Reunião em "+snapshot.val().data);
                 $('.case .case-container').html(`
                     <div class="form-group">
                         <label>Descrição</label>
                         <textarea class="form-control" rows="3" disabled>${descricao}</textarea>
                     </div>
-                    <table class="table table-condensed table-striped table-hover">
+                    <table class="table table-condensed table-bordered">
                     <thead>
                         <tr>
-                            <th>Presentes</th>
+                            <th>Nome</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody class="tableUsuarios">
                         <tr class="loading"><td><div class="fa fa-circle-o-notch fa-spin"></div></td></tr>
                     </tbody>
-                </table>`);
+                </table>
 
-                // <button class="btn btn-fill btn-default btn-sm"><div class="fa fa-trash-o"></div> Apagar chamada</button>
+                <button class="btn btn-fill btn-danger btn-sm btnRemover" value="${snapshot.key}"><div class="fa fa-trash-o"></div> Remover chamada</button>`);
 
                 $.each(snapshot.val().presentes, function(childIndex, childValue){
-                    db.ref('users').child(childIndex).once('value',function(result){
+                    db.ref('users').child(childIndex).on('value',function(result){
                         $('.loading').remove();
+
+                        var presente = (childValue) ? "presente" : "faltou";
+                        var sePresente = (childValue) ? "text-success" : "text-danger";
+
                         $('.tableUsuarios').append(`<tr>
                                     <td>${result.val().nome}</td>
+                                    <td class="${sePresente}"><strong>${presente}</strong></td>
                                 </tr>`);
                     });
                 });
@@ -53,7 +57,7 @@ var chamadas = {
     },
 
     adicionar: function(data){
-        
+
         var novaChamada = db.ref('chamadas').push();
         novaChamada.set(data).catch(function(error){
             console.log(error.code);
@@ -68,15 +72,19 @@ var chamadas = {
         var presentes = {};
         var count = 0;
         $.each($('input[name=presenca]:checked'),function(){
-            // presentes.push({ [$(this).val()]: true });
             presentes[$(this).val()] = true;
             count++;
+        });
+
+        $.each($('input[name=presenca]:not(:checked)'),function(){
+            presentes[$(this).val()] = false;
         });
 
         var data = {
             data: dataCompleta,
             descricao: $('.inputDescricao').val(),
-            presentes: presentes
+            presentes: presentes,
+            qntPresentes: count
         };
 
         chamadas.adicionar(data);
@@ -89,7 +97,7 @@ var chamadas = {
             <div class="form-group">
                 <textarea class="form-control inputDescricao" placeholder="Descrição da reunião" rows="3"></textarea>
             </div>
-            <table class="table table-condensed table-striped table-hover">
+            <table class="table table-condensed table-bordered">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -121,7 +129,14 @@ var chamadas = {
             }
         });
 
-    }
+    },
+
+    remover: function(chamId){
+        db.ref('chamadas/' + chamId).set({}).then(function(){
+            cas_e.close();
+            $.notify({message: "Chamada removida!"}, {type: "info", timer: 3000});
+        });
+    },
 }
 
 chamadas.load();
@@ -136,4 +151,8 @@ $(document).on('click', '.btnAdicionarChamada', function(){
 
 $(document).on('click', '.btnAdicionar', function(){
     chamadas.verificar();
+});
+
+$(document).on('click', '.btnRemover', function(){
+    chamadas.remover($(this).val());
 });
