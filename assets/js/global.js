@@ -5,12 +5,13 @@ function loadPage(page){
 		$.ajax({
 			url: 'assets/views/'+page+'.html',
 			beforeSend: function(){
-				$.notifyClose();
-				cas_e.close();
 				$('.sidebar').collapse("hide");
 				$('.loadingPage').show();
 			},
 			success: function(html){
+				$('.case .case-footer').fadeOut();
+				cas_e.close();
+				$.notifyClose();
 				$('.loadingPage').hide();
 				$('.loadPage').html(html);
 			}, error: function(){
@@ -25,6 +26,9 @@ function loadPage(page){
 		localStorage.currentPage = page;
 	// }
 }
+var date = new Date();
+var dia = (date.getDate() < 10) ? "0"+date.getDate() : date.getDate();
+var dataCompleta = dia+"/"+date.getMonth()+"/"+date.getFullYear();
 
 var cargos = {
 		"Diretor": 0,

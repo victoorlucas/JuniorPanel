@@ -1,7 +1,3 @@
-var date = new Date();
-var dia = (date.getDate() < 10) ? "0"+date.getDate() : date.getDate();
-var dataCompleta = dia+"/"+date.getMonth()+"/"+date.getFullYear();
-
 var chamadas = {
     load: function(){
         $('.currentDate').html(dataCompleta);
