@@ -1,36 +1,56 @@
-function loadPage(page){
-	// if(localStorage.currentPage != page && page !=perfil){
+global = {
+	msg(message,type = 'info',timer = 3000){
+		$.notifyClose();
+		$.notify({message: message}, {type: type, timer: timer, newest_on_top: true});
+	},
+
+	loadPage(page, nivel = null){
 		$('li').removeClass('active');
 
-		$.ajax({
-			url: 'assets/views/'+page+'.html',
-			beforeSend: function(){
-				$('.sidebar').collapse("hide");
-				$('.loadingPage').show();
-			},
-			success: function(html){
-				$('.case .case-footer').fadeOut();
-				cas_e.close();
-				$.notifyClose();
-				$('.loadingPage').hide();
-				$('.loadPage').html(html);
-			}, error: function(){
-				loadPage('inicio');
-				$.notify({message: "Página "+page+" não existe!"}, {type: 'danger', timer: 3000,newest_on_top: true});
-			}
-		});
+		if(nivel != null){
+			db.ref('users').child(localStorage.currentUid).once('value', user => {
+				global.loadPage((user.val().cargo == nivel) ? page : 'error401');
+			});
+		}else{
+			$.ajax(`assets/views/${page}.html`)
+				.done(html => {
+					$('.loadPage').html(html);
+				})
+				.fail(() => {
+					global.loadPage('error404');
+				});
+		}
 
 		localStorage.removeItem('paginaAnterior');
 		localStorage.paginaAnterior = localStorage.currentPage;
 		localStorage.removeItem('currentPage');
 		localStorage.currentPage = page;
-	// }
-}
-var date = new Date();
-var dia = (date.getDate() < 10) ? "0"+date.getDate() : date.getDate();
-var dataCompleta = dia+"/"+date.getMonth()+"/"+date.getFullYear();
+	},
 
-var cargos = {
+	verificaNivel(nivel){
+		db.ref('users').child(localStorage.currentUid).once('value',user => {
+			if(user.val().cargo != nivel)
+				global.loadPage('error401');
+		});
+	},
+
+	logout(){
+		auth.signOut().then(() => {
+			localStorage.removeItem('currentPage').removeItem('currentUid');
+			location.href="login.html";
+		});
+	}
+};
+
+Object.freeze(global);
+
+
+
+const date = new Date();
+const day = (date.getDate() < 10) ? "0"+date.getDate() : date.getDate();
+const dataCompleta = day+"/"+date.getMonth()+"/"+date.getFullYear();
+
+const cargos = {
 		"Diretor": 0,
 		"Gerente de negócios": 0,
 		"Coordenador de projetos": 0,
@@ -39,96 +59,51 @@ var cargos = {
 		"Analista de sistemas": 1
 };
 
-function verificaNivel(nivel, func){
-	db.ref('users').child(localStorage.currentUid).once('value',function(user){
-		if(user.val().cargo == nivel){
-			func;
-		}else{
-			cas_e.close();
-			loadPage('inicio');
-			$.notify({message: "Função indisponível para seu usuário!"},{type: 'danger', timer: 3000});
-		}
-	});
-}
-
-$(function(){
-	var body = $('body');
-
-	$('body').tooltip({
+$(() => {
+	$(document).tooltip({
     	selector: '[data-toggle="tooltip"]'
 	});
 
-	$(document).on('click touchstart','[data-page=inicio]',function(){
-		loadPage('inicio');
+	$(document).on('click touchend', '.selectorPage', function(e){
+		var page = $(this).data('page');
+		var page = page.split("_");
+
+		if(page[1] == 'i')
+			global.loadPage(page[0], 0);
+		else
+			global.loadPage(page[0]);
+
 		$(this).addClass('active');
 	});
 
-	$(document).on('click','[data-page=funcionalidades]',function(){
-		loadPage('funcionalidades');
-		$(this).addClass('active');
-	});
-
-	$(document).on('click','[data-page=gerenciarUsuarios]',function(){
-		loadPage('gerenciarUsuarios');
-	});
-
-	$(document).on('click','[data-page=alterarSenha]',function(){
-		loadPage('alterarSenha');
-	});
-
-	$(document).on('click','[data-page=perfil]',function(){
-		loadPage('perfil');
-		$(this).addClass('active');
-	});
-
-	$(document).on('click','[data-page=voltarPagina]',function(){
-		loadPage(localStorage.paginaAnterior);
-	});
-
-	$(document).on('click','[data-page=adicionarUsuario]',function(){
-		verificaNivel(0,loadPage('adicionarUsuario'));
-	});
-
-	$(document).on('click','[data-page=chamadas]',function(){
-		loadPage('chamadas');
-	});
-
-	// $(document).on('click','.navbar-toggle', function(){
-	// 	if($(this).attr('aria-expanded') == 'true'){
-	// 		$(this).html(`<div class="fa fa-times"></div>`);
-	// 	}else{
-	// 		$(this).html(`<div class="fa fa-bars"></div>`);
-	// 	}
-	// });
-
-	$('.sairBtn').on('click',function(){
-		logout();
+	$(document).on('click','[data-page=sair]',e => {
+		e.preventDefault();
+		global.logout();
 	});
 
 
-	// $(document.body).on("keydown", this, function (event) {
-	//     if (event.keyCode == 116) {
-	//         loadPage(localStorage.currentPage);
-	// 		event.preventDefault();
-	//     }
-	// }); <- quando clica no botão f5
+	//REFATORAR -> CODIGO VINDO DE index.js
+	auth.onAuthStateChanged(function(user) {
+		if (!user) {
+			location.href="login.html";
+		}else{
+			db
+				.ref('users')
+				.child(localStorage.currentUid)
+				.on('value', function(snapshot){
+					if(snapshot.val() != null){
+						$('.titleBarNome').html(snapshot.val().nome);
+					}else{
 
+					global.loadPage('perfil');
+					$('[data-page=perfil]').addClass('active');
+					$('.titleBarNome').html(user.email);
+					}
+				})
+		}
+	});
 
+	global.loadPage('inicio');
+	$('[data-page=inicio]').addClass('active');
 
 });
-
-//locais guardados -> currentPage, currentUid
-
-function logout(){
-	auth.signOut().then(function(){
-
-		localStorage.removeItem('currentPage');
-		localStorage.removeItem('currentUid');
-
-		location.href="login.html"
-
-	}, function(error) {
-		console.log(error);
-		location.href="login.html"
-	});
-}
