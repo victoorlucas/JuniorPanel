@@ -1,78 +1,67 @@
 /*
-    Version 1.0
-    Write by Victor Lucas
-
-    Futuramente pretendo implementar o login de forma a tornar mais fácil o acesso à ferramenta, por enquanto ainda estou tentando implementar todas as funções necessárias para o bom funcionamento.
+    Pre-release 0.1 [AdventureTime]
+    Author: Victor Lucas
+    Author website: victorlucss.com
 */
-var login = {
-    login: function(data){
 
-        //
+window.login = window.login || {
+    login(data){
         auth
             .signInWithEmailAndPassword(data.email, data.senha)
-            .catch(function(error) {
-                if(error=="auth/network-request-failed"){
-                    $.notify({message: "Por favor conecte-se a internet"}, {type: 'danger',timer: 2000,newest_on_top: true});
-                }else{
-                    $.notify({message: "E-mail ou senha incorretos!"}, {type: 'danger',timer: 2000,newest_on_top: true});
-                }
-                $('.btnLogin').html(`Login <i class="fa fa-arrow-right" aria-hidden="true"></i>`);
-            })
-            .then(function(result) {
+            .then(result => {
                 location.href = "index.html";
                 localStorage.currentUid = result.uid;
-                $('.btnLogin').html(`<i class="fa fa-check" aria-hidden="true"></i> Logado`);
+                $('.btnLogin').html(`<i class="fa fa-check" aria-hidden="true"></i> Redirecionando`);
+            }, error => {
+                $.notify({message: "E-mail ou senha incorretos!"}, {type: 'danger',timer: 2000,newest_on_top: true});
+                $('.btnLogin').html(`Login <i class="fa fa-arrow-right" aria-hidden="true"></i>`);
             });
 
     },
 
-    verifica: function(data){
-         $('.btnLogin').html(`<i class="fa fa-circle-o-notch fa-spin"></i>`);
+    verifica(data){
         $.notifyClose();
+         $('.btnLogin').html(`<i class="fa fa-circle-o-notch fa-spin"></i>`);
 
         for(key in data){
-            if(data[key].val()==''){
+            if(data[key] == ''){
                 $.notify({message: "Preencha o campo "+key}, {type: 'danger', timer: 3000, newest_on_top: true});
                 $('.btnLogin').html(`Login <i class="fa fa-arrow-right" aria-hidden="true"></i>`);
                 return;
             }
         }
 
-        var data = {
-            email: data.email.val(),
-            senha: data.senha.val()
-        };
-
         login.login(data);
     }
 }
 
-$(function() {
+$(() => {
     auth.onAuthStateChanged(function(user) {
-      if (user) {
+      if(user)
         location.href="index.html";
-      }
     });
 
-    //quando apertar enter, executar o login tbm
+
     $(document).keypress(function(e) {
-        var data = {
-            email: $('.inputEmail'),
-            senha: $('.inputSenha')
+        const data = {
+            email: $('.inputEmail').val(),
+            senha: $('.inputSenha').val()
         };
 
-        if (e.which == 13) {
+        if(e.which == 13)
             login.verifica(data);
-            e.preventDefault();
-        }
+
+        e.preventDefault();
     });
 
-    $('.btnLogin').on('click',function(){
-        var data = {
-            email: $('.inputEmail'),
-            senha: $('.inputSenha')
+    $('.btnLogin').on('click',function(e){
+        const data = {
+            email: $('.inputEmail').val(),
+            senha: $('.inputSenha').val()
         };
 
         login.verifica(data);
+
+        e.preventDefault();
     });
 });
