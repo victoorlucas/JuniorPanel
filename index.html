@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 
-	<title>Techsoft - Administrativo</title>
+	<title>JuniorPanel</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -16,7 +16,6 @@
     <script src="assets/js/bootstrap-notify.js"></script>
     <script src="assets/js/board.js"></script>
     <script src="assets/js/firebase.js"></script>
-    <script src="assets/js/index.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -24,32 +23,32 @@
 
             <div class="sidebar-wrapper">
                 <center class="logo">
-                    Techsoft
+                    JuniorPanel
                 </center>
 
                 <ul class="nav">
-                    <li data-page="inicio">
+                    <li class="selectorPage" data-page="inicio">
                         <a>
                             <i class="pe-7s-home"></i>
                             <p>Inicio</p>
                         </a>
                     </li>
 
-                    <li data-page="funcionalidades">
+                    <li class="selectorPage" data-page="funcionalidades_i">
                         <a>
                             <i class="pe-7s-tools"></i>
                             <p>Funcionalidades</p>
                         </a>
                     </li>
 
-                    <li data-page="perfil">
+                    <li class="selectorPage" data-page="perfil">
                         <a>
                             <i class="pe-7s-user"></i>
                             <p>Meu perfil</p>
                         </a>
                     </li>
 
-                    <li class="sairBtn">
+                    <li class="selectorPage" data-page="sair">
                         <a>
                             <i class="pe-7s-close"></i>
                             <p>Sair</p>
@@ -76,14 +75,9 @@
             </nav>
 
             <div class="content">
-            <div class="janela black-gradient" style="display: none;">
-                    <div class="loading">
-                        Carregando página...
-                    </div>
-                </div>
-
                 <div class="container-fluid">
                     <div class="loadPage"></div>
+                    <small class="pull-right">Made with <span class="fa fa-heart text-danger"></span> by <a href="http://www.victorlucss.com" target="_blank">Victor Lucas</a></small>
                 </div>
             </div>
 
@@ -97,10 +91,6 @@
         </div>
 
         <div class="case-container"><i class="fa fa-circle-o-notch fa-spin"></i></div>
-<!-- 
-        <div class="case-footer">
-                Here's a case footer
-            </div> -->
     </div>
 </body>
     <script src="assets/js/global.js?v=001"></script>
