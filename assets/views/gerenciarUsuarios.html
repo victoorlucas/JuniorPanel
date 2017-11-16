@@ -8,7 +8,6 @@
 		<div class="card">
 			<div class="header">
 				<h4 class="title">Gerenciar usuarios</h4>
-				<!-- <div class="card-subtitle mb-2 text-muted">Aqui você pode gerenciar todos os usuários (editar ou apagá-los). Se deseja criar um novo <a data-page="adicionar_usuario">clique aqui</a>.</div> -->
 			</div>
 			<div class="content">
 				<table class="table table-condensed table-striped table-hover">
@@ -19,10 +18,14 @@
 							<th></th>
 						</tr>
 					</thead>
-					<tbody class="tableUsuarios"></tbody>
+
+					<tbody class="tableUsuarios">
+						<span class="loading text-center"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
 </div>
+
 <script src="assets/js/ctrl/gerenciarUsuarios.js" type="text/javascript"></script>
