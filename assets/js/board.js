@@ -11,10 +11,15 @@ var cas_e = {
 
 $(function(){
     $(document).on('click','[data-case="show"]', function(){
+        cas_e.close();
         cas_e.open();
     });
 
     $(document).on('click','[data-case="hide"]', function(){
+        cas_e.close();
+    });
+
+    $(document).on('click','[data-case="close"]', function(){
         cas_e.close();
     });
 
