@@ -48,10 +48,10 @@ $(() => {
             senha: $('.inputSenha').val()
         };
 
-        if(e.which == 13)
+        if(e.which == 13){
             login.verifica(data);
-
-        e.preventDefault();
+            e.preventDefault();
+        }
     });
 
     $('.btnLogin').on('click',function(e){
